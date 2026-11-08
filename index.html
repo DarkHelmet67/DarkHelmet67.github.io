@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Luca Ceccatelli">
+<meta property="og:description" content="Senior frontend engineer and tech lead: video streaming players, ad monetization, AI-assisted engineering. Open to full-remote roles and project-based consulting.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://darkhelmet67.github.io/">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Luca Ceccatelli</title>
+<meta name="description" content="Luca Ceccatelli: senior frontend engineer and tech lead for video streaming players, ad monetization and AI-assisted engineering. Available for full-remote roles and project-based consulting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,700;112,800;100,500&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a broadcast-console page. The hero carries a player seek bar whose chapters are the career's domains, with the playhead at the live edge. Work, consulting and contact follow in one column. */
+:root{
+  --bg:#0e1117; --surface:#161b24; --line:#262e3b; --fg:#e8ecf2; --muted:#98a2b3;
+  --accent:#f2b33d; --accent-ink:#1a1405; --live:#ff5a4f;
+  --display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#f3f4f6; --surface:#ffffff; --line:#dde1e7; --fg:#121620; --muted:#586273;
+  --accent:#a96c00; --accent-ink:#ffffff; --live:#cf3a2f; color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#f3f4f6; --surface:#ffffff; --line:#dde1e7; --fg:#121620; --muted:#586273;
+  --accent:#a96c00; --accent-ink:#ffffff; --live:#cf3a2f; color-scheme:light}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px;flex-wrap:wrap}
+.mark{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--live);box-shadow:0 0 0 4px color-mix(in srgb,var(--live) 22%,transparent)}
+.top nav{display:flex;gap:20px;font-size:.92rem}
+.top nav a{text-decoration:none;color:var(--muted)}
+.top nav a:hover{color:var(--fg)}
+
+/* hero */
+.hero{padding-block:48px 28px;display:grid;gap:22px}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0}
+h1{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.02;letter-spacing:-.01em;margin:0;max-width:16ch;text-wrap:balance}
+.lede{font-size:1.15rem;color:var(--muted);max-width:60ch;margin:0}
+.lede strong{color:var(--fg);font-weight:600}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:600 .95rem var(--body);display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:hover{border-color:var(--accent)}
+
+/* seek bar */
+.player{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px 16px;display:grid;gap:12px}
+.player-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.75rem;color:var(--muted);gap:12px;flex-wrap:wrap}
+.live{display:inline-flex;align-items:center;gap:6px;color:var(--live);font-weight:500;letter-spacing:.08em}
+.track{position:relative;height:6px;border-radius:3px;background:var(--line)}
+.fill{position:absolute;inset:0 auto 0 0;width:100%;border-radius:3px;background:linear-gradient(90deg,color-mix(in srgb,var(--fg) 30%,transparent),var(--fg))}
+.cue{position:absolute;top:-4px;width:3px;height:14px;border-radius:1px;background:var(--accent)}
+.head{position:absolute;right:-7px;top:-5px;width:16px;height:16px;border-radius:50%;background:var(--fg);box-shadow:0 0 0 4px color-mix(in srgb,var(--fg) 18%,transparent)}
+.chapters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;font-size:.8rem;color:var(--muted)}
+.chapters span{border-left:1px solid var(--line);padding-left:8px;min-width:0}
+.chapters span:last-child{color:var(--fg);border-color:var(--live)}
+.legend{font-family:var(--mono);font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:8px}
+.legend i{display:inline-block;width:3px;height:12px;background:var(--accent);border-radius:1px}
+@media (prefers-reduced-motion:no-preference){
+  .fill{animation:grow 1.4s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes grow{from{width:8%}to{width:100%}}
+}
+
+/* sections */
+section{padding-block:56px 8px;display:grid;gap:26px}
+.sec-label{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0;display:flex;align-items:center;gap:12px}
+.sec-label::after{content:"";flex:1;height:1px;background:var(--line)}
+h2{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:clamp(1.6rem,3.4vw,2.2rem);line-height:1.1;margin:0;text-wrap:balance;max-width:24ch}
+
+.case{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:12px 36px;padding-block:24px;border-top:1px solid var(--line)}
+.case h3{font-family:var(--display);font-stretch:100%;font-weight:700;font-size:1.3rem;margin:0;line-height:1.2}
+.case .where{font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-top:6px}
+.case p{margin:0 0 12px;max-width:62ch}
+.case ul{margin:0 0 14px;padding-left:18px;max-width:62ch}
+.case li{margin-bottom:4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+.tags li{font-family:var(--mono);font-size:.72rem;padding:3px 8px;border:1px solid var(--line);border-radius:4px;color:var(--muted);margin:0}
+.links{display:flex;flex-wrap:wrap;gap:8px 18px;font-weight:600;font-size:.95rem;margin-top:12px}
+.links a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+.side{font-size:.92rem;color:var(--muted);margin-top:4px}
+.side a{color:var(--fg)}
+
+.offers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.offer{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:10px;align-content:start}
+.offer h3{font-family:var(--display);font-weight:700;font-size:1.12rem;margin:0;line-height:1.25}
+.offer p{margin:0;font-size:.95rem;color:var(--muted)}
+.terms{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.92rem;color:var(--muted)}
+.terms b{color:var(--fg);font-weight:600}
+
+.contact{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;display:grid;gap:16px;margin-top:8px}
+.addr{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.addr code{font-family:var(--mono);font-size:1rem;user-select:all;overflow-wrap:anywhere}
+.copy{font:500 .8rem var(--mono);padding:6px 10px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+footer{padding-block:40px 48px;font-family:var(--mono);font-size:.75rem;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:760px){
+  .case{grid-template-columns:1fr}
+  .offers{grid-template-columns:1fr}
+  .chapters{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .chapters span:nth-child(1),.chapters span:nth-child(2){display:none}
+  body{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#top"><span class="dot" aria-hidden="true"></span>Luca Ceccatelli</a>
+    <nav aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#consulting">Consulting</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero" id="top">
+    <p class="eyebrow">Senior frontend · Video streaming &amp; ads · AI engineering</p>
+    <h1>Video players that earn. Teams that ship faster with AI.</h1>
+    <p class="lede">I'm a tech lead who has spent the last years on <strong>SkyPlayer</strong>, Sky Italia's HLS streaming player for Web and HbbTV and its core digital revenue tool. I also bring <strong>AI agents into real engineering teams</strong>, with the rules, context and skills that make them reliable. Open to full-remote roles and project-based consulting.</p>
+    <div class="ctas">
+      <a class="btn primary" href="#contact">Get in touch</a>
+      <a class="btn" href="cv/Luca_Ceccatelli_CV_EN.pdf" target="_blank" rel="noopener">CV (EN)</a>
+      <a class="btn" href="cv/Luca_Ceccatelli_CV_IT.pdf" target="_blank" rel="noopener">CV (IT)</a>
+      <a class="btn" href="https://github.com/DarkHelmet67" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/luca-ceccatelli-7a305b5/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+
+    <div class="player" aria-label="Career timeline shown as a video seek bar">
+      <div class="player-head">
+        <span>career.m3u8</span>
+        <span class="live"><span class="dot" aria-hidden="true"></span>LIVE</span>
+      </div>
+      <div class="track" aria-hidden="true">
+        <div class="fill"></div>
+        <span class="cue" style="left:20%"></span>
+        <span class="cue" style="left:40%"></span>
+        <span class="cue" style="left:60%"></span>
+        <span class="cue" style="left:80%"></span>
+        <span class="head"></span>
+      </div>
+      <div class="chapters">
+        <span>Web &amp; CMS</span>
+        <span>Android apps</span>
+        <span>Smart TV apps</span>
+        <span>HLS · HbbTV · Ads</span>
+        <span>AI-assisted engineering</span>
+      </div>
+      <div class="legend"><i aria-hidden="true"></i>chapter markers, placed like ad cue points</div>
+    </div>
+  </div>
+
+  <section id="work" aria-labelledby="work-h">
+    <p class="sec-label">Selected work</p>
+    <h2 id="work-h">Three things I can show you</h2>
+
+    <article class="case">
+      <div>
+        <h3>SkyPlayer</h3>
+        <div class="where">Sky Italia · Tech lead, Player/OVP team</div>
+      </div>
+      <div>
+        <p>The HLS streaming player for Web and HbbTV that carries Sky Italia's digital advertising revenue. I led development and testing, and the onboarding and code review of the team.</p>
+        <ul>
+          <li>Ad monetization with Google IMA, Google DAI and FreeWheel</li>
+          <li>A lite player built to the HbbTV standard for TV8, with in-depth HbbTV/OIPF know-how</li>
+          <li>Test automation with Cucumber, Selenium and Playwright, in TypeScript</li>
+        </ul>
+        <ul class="tags"><li>TypeScript</li><li>HLS</li><li>HbbTV/OIPF</li><li>IMA</li><li>DAI</li><li>FreeWheel</li><li>Playwright</li></ul>
+      </div>
+    </article>
+
+    <article class="case">
+      <div>
+        <h3>AI in the engineering team</h3>
+        <div class="where">Sky Italia · AI evangelist</div>
+      </div>
+      <div>
+        <p>Agents only help a team when they know its rules. I set those rules up and spread the practice.</p>
+        <ul>
+          <li>AGENTS.md files across the team's projects, giving agents current context and shared code conventions</li>
+          <li>SKILL.md files that automate recurring development tasks</li>
+          <li>Regular talks at internal Tech Days on bringing agents into new and existing projects</li>
+          <li>A team guide on keeping agent sessions lean and token costs down</li>
+        </ul>
+        <ul class="tags"><li>Claude Code</li><li>Copilot</li><li>GPT</li><li>Gemini</li><li>AGENTS.md</li><li>Skills</li></ul>
+      </div>
+    </article>
+
+    <article class="case">
+      <div>
+        <h3>insert-coin</h3>
+        <div class="where">Open source · MIT</div>
+      </div>
+      <div>
+        <p>Six classic arcade games rebuilt from scratch for the browser: Space Invaders, Breakout, Asteroids, Lunar Lander, Galaga and Pac-Man. It is also a step-by-step record of building software with Claude as a development partner.</p>
+        <ul>
+          <li>Plain TypeScript on HTML5 Canvas, no game framework</li>
+          <li>pnpm monorepo with shared packages, Vite and Vitest, CI and deploy on GitHub Actions</li>
+          <li>Claude Code skills for PR review and resolution, and a single prompt that rebuilds the project</li>
+        </ul>
+        <ul class="tags"><li>TypeScript</li><li>Canvas</li><li>Web Audio</li><li>pnpm</li><li>Vite</li><li>GitHub Actions</li></ul>
+        <div class="links">
+          <a href="https://darkhelmet67.github.io/insert-coin/" target="_blank" rel="noopener">Play in the browser</a>
+          <a href="https://github.com/DarkHelmet67/insert-coin" target="_blank" rel="noopener">Source and guides</a>
+        </div>
+        <p class="side">Also on GitHub: <a href="https://github.com/DarkHelmet67/tado-widget" target="_blank" rel="noopener">tado-widget</a>, an Android widget for tado° thermostats with OAuth device-code sign-in.</p>
+      </div>
+    </article>
+  </section>
+
+  <section id="consulting" aria-labelledby="cons-h">
+    <p class="sec-label">Consulting</p>
+    <h2 id="cons-h">Available for project-based work</h2>
+    <div class="offers">
+      <div class="offer">
+        <h3>AI enablement for dev teams</h3>
+        <p>I set up AGENTS.md and skills for your codebase, define how the team works with agents, and run a hands-on session so the practice sticks.</p>
+      </div>
+      <div class="offer">
+        <h3>Video player and ad integration</h3>
+        <p>HLS playback on Web and Smart TV, HbbTV apps, and ad integration with Google IMA, DAI or FreeWheel. From audit to delivery.</p>
+      </div>
+      <div class="offer">
+        <h3>Frontend tech leadership</h3>
+        <p>Interim tech lead, code review and onboarding, or a test automation setup with Playwright for a team that needs it now.</p>
+      </div>
+    </div>
+    <div class="terms">
+      <span><b>Remote</b>, based near Milan</span>
+      <span><b>CET</b> time zone</span>
+      <span><b>Italian</b> and <b>English</b></span>
+    </div>
+  </section>
+
+  <section id="contact" aria-labelledby="contact-h">
+    <p class="sec-label">Contact</p>
+    <div class="contact">
+      <h2 id="contact-h">Let's talk about your project or team</h2>
+      <div class="addr">
+        <code id="email">lucaceccatelli067@gmail.com</code>
+        <button class="copy" id="copy-email" type="button">Copy</button>
+        <a class="btn primary" href="mailto:lucaceccatelli067@gmail.com">Write an email</a>
+      </div>
+      <div class="links">
+        <a href="https://www.linkedin.com/in/luca-ceccatelli-7a305b5/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/DarkHelmet67" target="_blank" rel="noopener">GitHub</a>
+        <a href="cv/Luca_Ceccatelli_CV_EN.pdf" target="_blank" rel="noopener">CV (EN)</a>
+        <a href="cv/Luca_Ceccatelli_CV_IT.pdf" target="_blank" rel="noopener">CV (IT)</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Luca Ceccatelli · Milan area, Italy</span>
+    <span>Built by hand, with Claude as pair</span>
+  </footer>
+</div>
+
+<script>
+document.getElementById("copy-email").addEventListener("click", function () {
+  var btn = this, text = document.getElementById("email").textContent;
+  function done(msg){ btn.textContent = msg; setTimeout(function(){ btn.textContent = "Copy"; }, 1800); }
+  function select(){ var r = document.createRange(); r.selectNodeContents(document.getElementById("email")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); done("Selected"); }
+  try {
+    navigator.clipboard.writeText(text).then(function(){ done("Copied"); }, select);
+  } catch (e) { select(); }
+});
+</script>
+
+</body>
+</html>
