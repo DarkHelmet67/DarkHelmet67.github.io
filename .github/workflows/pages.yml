@@ -1,0 +1,59 @@
+# Pubblica il sito su GitHub Pages e converte ogni .md della radice in .html.
+# Richiede: Settings → Pages → Source = "GitHub Actions".
+name: Pubblica sito
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installa Pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Prepara la cartella del sito
+        run: |
+          mkdir -p _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_templates' --exclude '_site' ./ _site/
+
+      - name: Converte i Markdown in HTML
+        run: |
+          for md in *.md; do
+            [ "$md" = "README.md" ] && continue
+            name="${md%.md}"
+            title=$(grep -m1 '^# ' "$md" | sed 's/^# //')
+            pandoc "$md" -f gfm -t html5 -s \
+              --template _templates/page.html \
+              --highlight-style=breezedark \
+              -M pagetitle="$title" -M lang=it \
+              -M description="$title" \
+              -o "_site/$name.html"
+          done
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
